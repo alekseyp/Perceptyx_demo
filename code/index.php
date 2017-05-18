@@ -20,10 +20,10 @@ class TableRows extends RecursiveIteratorIterator {
     }
 }
 
-$servername = "db";
-$username = "perceptyx_usr98";
-$password = "PerceptyxSecret!";
-$dbname = "employees";
+$servername = 'db';
+$username = getenv('MYSQL_USER');
+$password = getenv('MYSQL_PASSWORD');
+$dbname = getenv('MYSQL_DATABASE');
 
 try {
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -31,7 +31,6 @@ try {
     $stmt = $conn->prepare("SELECT * FROM employees WHERE birth_date = '1965-02-01' AND gender = 'M' AND hire_date > '1990-01-01' ORDER BY first_name ASC, last_name ASC");
     $stmt->execute();
 
-    // set the resulting array to associative
     $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
     foreach(new TableRows(new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
         echo $v;
@@ -42,4 +41,3 @@ catch(PDOException $e) {
 }
 $conn = null;
 echo "</table>";
-?>
