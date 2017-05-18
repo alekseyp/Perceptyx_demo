@@ -1,0 +1,7 @@
+---
+- name: Provisioning git repo
+  hosts: all
+  sudo: yes
+  tasks:
+    - name: Deploy code from Github repository
+      git: repo=https://github.com/alekseyp/Perceptyx_demo dest=/opt/perceptyx_demo update=yes force=yes

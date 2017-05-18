@@ -1,0 +1,32 @@
+---
+- name: Provisioning server
+  hosts: all
+  sudo: yes
+  vars:
+    server_hostname: demo.server.local
+  tasks:
+    - name: install packages
+      apt: name={{ item }} state=latest update_cache=yes
+      with_items:
+        - git
+        - wget
+        - curl
+
+    - name: install docker
+      shell: curl -sSL https://get.docker.com/ | sh
+      args:
+        creates: /usr/bin/docker
+
+    # required to install docker-py
+    - name: install pip
+      shell: curl https://bootstrap.pypa.io/get-pip.py | python
+      args:
+        creates: /usr/local/bin/pip
+
+    # required by ansible docker module
+    - name: install docker-py
+      #pip: name=docker-py version=1.7.0
+      pip: name=docker-py
+
+    - name: Start docker daemon
+      service: name=docker state=started enabled=yes

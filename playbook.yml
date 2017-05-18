@@ -1,0 +1,12 @@
+---
+- hosts: all
+  tags: preansible
+  remote_user: root
+  gather_facts: no
+  pre_tasks:
+    - name: 'install python2'
+      raw: sudo apt-get -y install python-simplejson
+
+- include: prepareServer.yml
+- include: gitRepo.yml
+- include: runDocker.yml
