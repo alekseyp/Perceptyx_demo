@@ -29,7 +29,7 @@
     - name: "Launch php container"
       docker_container:
        name: php
-       image: php:7-fpm
+       image: acomcm/php-mysql
        links:
          - db
        volumes:
